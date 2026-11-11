@@ -11,3 +11,6 @@ export const S = { role: 'student', sView: 'join', team: 'Team Lava', versions: 
   auth: { teacher: 0, admin: 0 }, created: false, tTab: 'class', tOpen: null, queue: { ember: 'open', ash: 'open', geyser: 'open' },
   aTab: 'coach', tone: 2, showPrompt: false, model: 'bal', teacherShape: true, tested: false, published: false,
   defs: { story: 'Is there a clear beginning, middle and end? Does the opening make you want to watch?', visual: 'Framing, light, and whether you can see what matters.', editing: 'Pace of the cuts and whether they support the story.', sound: 'Can you hear every word? Is music balanced with voice?', facts: 'Is the subject explained correctly? Mark doubtful claims to double-check; never assert a correction.' } };
+
+// Basics FrameUp checks on every video (edited in the admin centre).
+S.general = [ { id: 'g1', t: 'The video is between 1 and 3 minutes long' }, { id: 'g2', t: 'The picture is sharp and bright enough to see what matters' }, { id: 'g3', t: 'Every spoken word can be understood' }, { id: 'g4', t: 'Text on screen stays long enough to read' } ];

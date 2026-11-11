@@ -1,5 +1,6 @@
 // Example data: the pre-written feedback, checklist results and pipeline steps.
 
+
 /* every comment belongs to one criterion (c); the assignment decides which criteria and how many comments appear */
 export const FB = [
   { file: 'volcano_final_v1.mp4', better: [],
@@ -29,6 +30,10 @@ export const FB = [
 export const REQ = [
   { r1: [1, '0:28', 'You explain magma as melted rock under the ground.'], r2: [1, '0:52', 'Your clay model shows the inside of the volcano.'], r3: [0, '', 'The coach did not hear the name of a real volcano.'], r4: [0, '2:05', 'The video ends with a goodbye, not a summary.'] },
   { r1: [1, '0:28', 'You explain magma as melted rock under the ground.'], r2: [1, '0:52', 'Your clay model shows the inside of the volcano.'], r3: [1, '1:55', 'You now mention Mount Etna as an example.'], r4: [0, '2:05', 'The video still ends with a goodbye, not a summary.'] } ];
+/* results for the basics FrameUp checks on every video, per version */
+export const GEN = [
+  { g1: [1, '', 'Your video is 2:14 long.'], g2: [1, '', 'Sharp and well lit in almost every shot.'], g3: [0, '1:12', 'The music covers the voice from 1:12 to 1:30.'], g4: [1, '0:05', 'The title stays on screen for four seconds.'] },
+  { g1: [1, '', 'Your video is 2:14 long.'], g2: [1, '', 'Sharp and well lit in almost every shot.'], g3: [1, '1:12', 'The voice is now clear all the way through.'], g4: [1, '0:05', 'The title stays on screen for four seconds.'] } ];
 
 /* what the pipeline removed before the AI coach saw the video, shown to the teacher only */
 export const REMOVED = {

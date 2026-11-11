@@ -8,7 +8,7 @@ export function critTable(v) {
   const d = FB[v], cell = (a, k, none) => a.filter(x => x.c === k).map(x => `<span class="ts">${x.ts}</span> <b>${x.title}</b><br>${x.text}`).join('<br><br>') || `<span class="fine">${none}</span>`;
   return `<div class="tw"><table><thead><tr><th>Criterion</th><th>What worked</th><th>Next step</th></tr></thead><tbody>${critOn().map(k => `<tr><td><b>${CR[k]}</b>${k === S.A.focus ? '<br><span class="pill ai">main focus</span>' : ''}</td><td>${cell(d.s, k, 'Nothing stood out')}</td><td>${cell(d.n, k, 'Nothing to improve')}</td></tr>`).join('')}</tbody></table></div>
     ${S.A.question ? `<p><b>Question for the team:</b> ${d.q}</p>` : ''}
-    ${checklist(v).replace('<div class="card">', '<div class="card" style="background:var(--bg)">')}
+    ${checklist(v).replaceAll('<div class="card">', '<div class="card" style="background:var(--bg)">')}
     <p class="fine">You see the coach's notes on every criterion. Students see the top ${S.A.nS} strengths and ${S.A.nN} next steps, main focus first.</p>`;
 }
 export function teams() {

@@ -1,6 +1,6 @@
 // Small helpers shared by the views.
 import { $, CR, S } from './state.js';
-import { FB, REQ } from './data.js';
+import { FB, REQ, GEN } from './data.js';
 
 /* a stand-in video frame: a volcano scene with a presenter whose face is blurred */
 export function frame(v, tc) {
@@ -14,13 +14,15 @@ export function frame(v, tc) {
   <rect x="42" y="104" width="34" height="56" rx="12" fill="#5650D6"/><circle cx="59" cy="88" r="16" fill="#E9B894" filter="url(#bl${v})"/></g></svg>${tc ? `<span class="tc">${tc}</span>` : ''}</div>`;
 }
 
+export const gens = () => S.general.filter(r => r.t.trim());
 export const reqs = () => S.A.reqs.filter(r => r.t.trim());
-export function checklist(v) {
-  const rs = reqs(); if (!rs.length) return '';
-  const res = r => REQ[v][r.id], done = rs.filter(r => res(r) && res(r)[0]).length;
-  return `<div class="card"><div class="row between"><h2>Assignment checklist</h2><span class="pill ${done === rs.length ? 'good' : ''}">${done} of ${rs.length} done</span></div>
+export function checkCard(title, rs, R) {
+  if (!rs.length) return '';
+  const res = r => R[r.id], done = rs.filter(r => res(r) && res(r)[0]).length;
+  return `<div class="card"><div class="row between"><h2>${title}</h2><span class="pill ${done === rs.length ? 'good' : ''}">${done} of ${rs.length} done</span></div>
     ${rs.map(r => { const x = res(r); return `<div class="req"><span class="pill ${!x ? '' : x[0] ? 'good' : 'warn'}">${!x ? 'New' : x[0] ? '✓ Done' : 'Not found yet'}</span><div><b>${r.t}</b><br><span class="fine">${!x ? 'Added after this upload. It is checked on the next version.' : (x[1] ? `<span class="ts">${x[1]}</span> ` : '') + x[2]}</span></div></div>`; }).join('')}</div>`;
 }
+export const checklist = v => checkCard('Assignment checklist', reqs(), REQ[v]) + checkCard('FrameUp basics', gens(), GEN[v]);
 export const reqList = () => reqs().length ? `<div class="col" style="gap:4px"><span class="fine" style="font-weight:700">Your video must</span>${reqs().map(r => `<span>☐ ${r.t}</span>`).join('')}</div>` : '';
 
 export function pick(v) {

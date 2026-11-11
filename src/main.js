@@ -40,6 +40,8 @@ document.addEventListener('click', e => {
     case 'joinreq': S.joinReq = v.toLowerCase(); toast(a.dataset.m); break;
     case 'reqadd': S.A.reqs.push({ id: 'n' + Date.now(), t: '' }); render(); { const el = document.querySelector('[data-req="' + (S.A.reqs.length - 1) + '"]'); if (el) el.focus(); } return;
     case 'reqdel': S.A.reqs.splice(+v, 1); break;
+    case 'genadd': S.general.push({ id: 'n' + Date.now(), t: '' }); render(); { const el = document.querySelector('[data-gen="' + (S.general.length - 1) + '"]'); if (el) el.focus(); } return;
+    case 'gendel': S.general.splice(+v, 1); break;
     case 'auth': S.auth[S.role] = +v; break;
     case 'go': S.sView = v; S.privacy = false; break;
     case 'start': S.sView = 'run'; S.stepIdx = 0; render(); window.scrollTo(0, 0); runStep(); return;
@@ -66,6 +68,7 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('tr[data-act]')) e.target.click(); if (e.key === 'Enter' && e.target.id === 'word') $('[data-act="join"]').click(); });
 document.addEventListener('change', e => {
   const t = e.target;
+  if (t.dataset.gen) { S.general[+t.dataset.gen].t = t.value; if ($('#prompt')) $('#prompt').textContent = promptText(); return; }
   if (t.dataset.req) { S.A.reqs[+t.dataset.req].t = t.value; return; }
   if (t.dataset.crit) { S.A.crit[t.dataset.crit] = t.checked; if (!critOn().length) { S.A.crit[t.dataset.crit] = true; t.checked = true; toast('Keep at least one criterion on.'); } if (!S.A.crit[S.A.focus]) S.A.focus = critOn()[0]; render(); }
   else if (t.dataset.set) { const k = t.dataset.set; S.A[k] = t.type === 'checkbox' ? t.checked : ['nS', 'nN', 'maxUp'].includes(k) ? +t.value : t.value; if (!['title', 'brief'].includes(k)) render(); }
