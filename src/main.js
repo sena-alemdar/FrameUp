@@ -1,6 +1,12 @@
 // Entry point: renders the current view and handles all clicks and inputs.
+import '@fontsource/bricolage-grotesque/latin-500.css';
+import '@fontsource/bricolage-grotesque/latin-700.css';
+import '@fontsource/bricolage-grotesque/latin-800.css';
+import '@fontsource/dm-sans/latin-400.css';
+import '@fontsource/dm-sans/latin-500.css';
+import '@fontsource/dm-sans/latin-700.css';
 import './styles.css';
-import { $, TONES, S } from './state.js';
+import { $, TONES, S, WORDS } from './state.js';
 import { STEPS } from './data.js';
 import { critOn, toast } from './helpers.js';
 import { student } from './views/student.js';
@@ -26,11 +32,16 @@ document.addEventListener('click', e => {
   const a = e.target.closest('[data-act]'); if (!a) return;
   const v = a.dataset.v, act = a.dataset.act;
   switch (act) {
-    case 'team': S.team = v; break;
+    case 'join': { const t = WORDS[$('#word').value.trim().toLowerCase()];
+      if (!t) { toast("We don't know this team word. Check the card from your teacher."); return; }
+      S.team = t; S.sView = 'home'; S.privacy = false; break; }
+    case 'privacy': S.privacy = !S.privacy; break;
+    case 'edit': if (v === 'Team Lava') S.edited = true; toast(`Edits saved. ${v} now sees "Reviewed by your teacher".`); break;
+    case 'joinreq': S.joinReq = v.toLowerCase(); toast(a.dataset.m); break;
     case 'reqadd': S.A.reqs.push({ id: 'n' + Date.now(), t: '' }); render(); { const el = document.querySelector('[data-req="' + (S.A.reqs.length - 1) + '"]'); if (el) el.focus(); } return;
     case 'reqdel': S.A.reqs.splice(+v, 1); break;
     case 'auth': S.auth[S.role] = +v; break;
-    case 'go': S.sView = v; break;
+    case 'go': S.sView = v; S.privacy = false; break;
     case 'start': S.sView = 'run'; S.stepIdx = 0; render(); window.scrollTo(0, 0); runStep(); return;
     case 'skip': finish(); return;
     case 'view': S.viewV = +v; S.open = {}; break;
@@ -52,7 +63,7 @@ document.addEventListener('click', e => {
   }
   render(); if (['go', 'atab', 'ttab'].includes(act)) window.scrollTo(0, 0);
 });
-document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('tr[data-act]')) e.target.click(); });
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('tr[data-act]')) e.target.click(); if (e.key === 'Enter' && e.target.id === 'word') $('[data-act="join"]').click(); });
 document.addEventListener('change', e => {
   const t = e.target;
   if (t.dataset.req) { S.A.reqs[+t.dataset.req].t = t.value; return; }
